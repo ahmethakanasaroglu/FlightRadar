@@ -169,11 +169,36 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate {
         noInternetLabel.text = message
         noInternetLabel.alpha = 1 // Önce direkt görünür yap
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
+        // "Tamam" butonunu oluştur
+        let okButton = UIButton(type: .system)
+        okButton.setTitle("Tamam", for: .normal)
+        okButton.frame = CGRect(x: 280, y: noInternetLabel.frame.maxY + 5, width: 80, height: 33) // Buton konumu
+        okButton.addTarget(self, action: #selector(dismissApp), for: .touchUpInside)
+        
+        // Buton stilini ayarla
+        okButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17) // Kalın yazı tipi
+        okButton.backgroundColor = .red // Kırmızı arka plan
+        okButton.setTitleColor(.white, for: .normal) // Beyaz metin rengi
+        okButton.layer.cornerRadius = 10 // Köşeleri yuvarlak yap
+        okButton.layer.borderWidth = 2 // Çerçeve
+        okButton.layer.borderColor = UIColor.white.cgColor // Çerçeve rengi
+        
+        // Butonu ekle
+        view.addSubview(okButton)
+        
+        // Butonun görünmesini sağla
+        okButton.alpha = 1
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1000000) { [weak self] in
             UIView.animate(withDuration: 1.0) {
-                self?.noInternetLabel.alpha = 0 // 4 saniye sonra yavaşça kaybolsun
+                self?.noInternetLabel.alpha = 0
             }
         }
+    }
+    
+    // Uygulamayı kapatma işlemi
+    @objc private func dismissApp() {
+        exit(0) // Uygulama kapanacak
     }
     
     @objc private func didTapLocateMe() {

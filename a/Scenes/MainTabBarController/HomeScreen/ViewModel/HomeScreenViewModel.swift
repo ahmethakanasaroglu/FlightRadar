@@ -25,7 +25,7 @@ class HomeScreenViewModel: MapKitManagerDelegate {
     
     func checkInternetConnection() {
         let isConnected = NetworkMonitor.shared.isConnected
-        let statusText = isConnected ? "" : "İnternet bağlantınız yok!"
+        let statusText = isConnected ? "" : "İnternet bağlantınız yok! Çıkış Yapılıyor."
         onInternetStatusChanged?(isConnected, statusText)
     }
     
