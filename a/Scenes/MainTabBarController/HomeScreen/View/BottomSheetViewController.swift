@@ -4,6 +4,7 @@ import PanModal
 class BottomSheetViewController: UIViewController, PanModalPresentable {
     
     var flight: State?
+    var favoritesViewModel = FavoritesViewModel()
     
     private let flightInfoContainer: UIView = {
         let view = UIView()
@@ -127,7 +128,7 @@ class BottomSheetViewController: UIViewController, PanModalPresentable {
         guard let flight = flight else { return }
         
         // Check if the flight is already in favorites
-        if FavoritesViewModel.shared.isFlightInFavorites(flight) {
+        if favoritesViewModel.isFlightInFavorites(flight) {
             // Eğer uçuş zaten favorilerdeyse, kullanıcıya bilgi ver
             let alert = UIAlertController(title: "Favori Uçuşlar",
                                           message: "Bu uçuş zaten favorilerinizde.",
@@ -148,7 +149,7 @@ class BottomSheetViewController: UIViewController, PanModalPresentable {
             present(alert, animated: true, completion: nil)
         } else {
             // Eğer uçuş favorilerde değilse, ekle
-            FavoritesViewModel.shared.addFlightToFavorites(flight)
+            favoritesViewModel.addFlightToFavorites(flight)
             
             // Favorilere eklendiğine dair bir alert göster
             let alert = UIAlertController(title: "Favori Uçuşlar",

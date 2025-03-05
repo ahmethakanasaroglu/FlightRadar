@@ -1,43 +1,41 @@
 import Foundation
 import CoreData
 
-class FavoritesViewModel: ObservableObject {
-    static let shared = FavoritesViewModel()
+class FavoritesViewModel {
+    private let coreDataManager: CoreDataManager
+    private(set) var favoriteFlights: [State] = []
     
-    @Published private(set) var favoriteFlights: [State] = []
-    
-    private init() {
+    init(coreDataManager: CoreDataManager = CoreDataManager.shared) {
+        self.coreDataManager = coreDataManager
         loadFavorites()
     }
     
     // Favorilere uçuş ekleme
     func addFlightToFavorites(_ flight: State) {
-        guard !CoreDataManager.shared.isFlightInFavorites(flight) else {
+        guard !coreDataManager.isFlightInFavorites(flight) else {
             print("Bu uçuş zaten favorilerde: \(flight.icao24!)")
             return
         }
         
-        CoreDataManager.shared.addFlightToFavorites(flight)
+        coreDataManager.addFlightToFavorites(flight)
         loadFavorites()  // Listeyi güncelle
     }
     
     // Favorilerden uçuş kaldırma
     func removeFlightFromFavorites(_ flight: State) {
-        CoreDataManager.shared.removeFlightFromFavorites(flight)
+        coreDataManager.removeFlightFromFavorites(flight)
         loadFavorites()  // Listeyi güncelle
     }
     
-    // Favori uçuşları yükleme (Core Data'dan çekiyoruz)
+    // Favori uçuşları yükleme
     func loadFavorites() {
-        let flightEntities = CoreDataManager.shared.fetchFavoriteFlights()
+        let flightEntities = coreDataManager.fetchFavoriteFlights()
         
         favoriteFlights = flightEntities.map { flightEntity in
             let icao24 = flightEntity.icao24 ?? "Bilinmiyor"
             let callSign = flightEntity.callSign ?? "Bilinmiyor"
             let longitude = flightEntity.longitude
             let latitude = flightEntity.latitude
-            
-            print("Uçuş: \(icao24), CallSign: \(callSign), Longitude: \(longitude), Latitude: \(latitude)")
             
             return State(
                 icao24: icao24,
@@ -47,11 +45,17 @@ class FavoritesViewModel: ObservableObject {
             )
         }
         
-        print("Favoriler yüklendi: \(favoriteFlights.count) uçuş")
+        // Güncelleme bildirimini gönder
+        NotificationCenter.default.post(name: .favoritesUpdated, object: nil)
     }
     
     // Uçuş favorilerde mi?
     func isFlightInFavorites(_ flight: State) -> Bool {
-        return CoreDataManager.shared.isFlightInFavorites(flight)
+        return coreDataManager.isFlightInFavorites(flight)
     }
+}
+
+// Favori uçuşlar güncellendiğinde tetiklenecek bildirim
+extension Notification.Name {
+    static let favoritesUpdated = Notification.Name("favoritesUpdated")
 }

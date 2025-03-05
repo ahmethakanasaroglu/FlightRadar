@@ -13,6 +13,7 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
     weak var delegate: MapKitManagerDelegate?
     private var favoriteFlights: Set<String> = []
     var flightsModel: [State] = []
+    var favoritesViewModel = FavoritesViewModel()
     
     override init() {
         super.init()
@@ -123,7 +124,7 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
         )
         
         // Favorilere ekleyelim
-        FavoritesViewModel.shared.addFlightToFavorites(flight)
+        favoritesViewModel.addFlightToFavorites(flight)
         
         // ICAO24 kodunu favori listesine ekleyelim
         //        favoriteFlights.insert(flightICAO24!)

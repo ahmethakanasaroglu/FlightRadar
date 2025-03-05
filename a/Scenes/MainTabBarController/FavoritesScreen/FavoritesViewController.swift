@@ -3,7 +3,7 @@ import UIKit
 class FavoritesViewController: UIViewController {
     
     private let tableView = UITableView()
-    private let viewModel = FavoritesViewModel.shared
+    private let viewModel = FavoritesViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
