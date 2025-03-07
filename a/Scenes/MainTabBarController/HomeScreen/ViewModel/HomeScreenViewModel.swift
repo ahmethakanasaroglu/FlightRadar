@@ -8,15 +8,15 @@ class HomeScreenViewModel: MapKitManagerDelegate {
     
     var onInternetStatusChanged: ((Bool, String) -> Void)?
     
-    
+    private var timer: Timer?
+
     init() {
         MapKitManager.shared.delegate = self
         MapKitManager.shared.startUpdatingLocation()
         fetchFlightData()
         observeInternetConnection()
-        
+        // startUpdatingFlightData()
     }
-    
     
     private func observeInternetConnection() {
         NetworkMonitor.shared.connectionStatusChanged = { [weak self] isConnected in
@@ -36,13 +36,21 @@ class HomeScreenViewModel: MapKitManagerDelegate {
             if let data = data {
                 print(data)
                 self?.flightData?(data)
-                print(data)
             } else {
                 print("API'den Veri Alınamadı!")
             }
         }
     }
     
+//    func startUpdatingFlightData() {
+//        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(fetchFlightData), userInfo: nil, repeats: true)
+//    }
+//
+    
+    func stopUpdatingFlightData() {
+        timer?.invalidate()
+    }
+
     func didUpdateUserLocation(_ location: CLLocation) {
         userLocation?(location)
     }

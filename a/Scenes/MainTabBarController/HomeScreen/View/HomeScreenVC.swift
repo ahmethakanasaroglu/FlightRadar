@@ -58,9 +58,16 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
     
     private let regionTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Bölge Giriniz.."
+        textField.placeholder = "Ülke, Şehir Ara.."
         textField.borderStyle = .roundedRect
         textField.clearButtonMode = .whileEditing
+        
+        // Çerçeve ekleme
+        textField.layer.borderColor = UIColor.orange.cgColor  // Kenarlık rengi
+        textField.layer.borderWidth = 2  // Kenarlık kalınlığı
+        textField.layer.cornerRadius = 8  // Kenarları yuvarlama
+        textField.layer.masksToBounds = true  // Kenarlara yuvarlama uygulanabilmesi için
+        
         return textField
     }()
     
@@ -68,6 +75,23 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
         let control = UISegmentedControl(items: ["Standart", "Uydu", "Hibrit"])
         control.selectedSegmentIndex = 0
         control.addTarget(self, action: #selector(didChangeMapType), for: .valueChanged)
+        
+        // Çerçeve ekleme
+        control.layer.borderColor = UIColor.orange.cgColor  // Çerçeve rengi
+        control.layer.borderWidth = 2  // Çerçeve kalınlığı
+        control.layer.cornerRadius = 8  // Köşe yuvarlama
+        control.layer.masksToBounds = true  // Köşe yuvarlamanın görünmesini sağlama
+        
+        // Segment başlıkları için yazı stili ayarlama
+        control.setTitleTextAttributes([
+            .foregroundColor: UIColor.white,  // Yazı rengi
+            .font: UIFont.boldSystemFont(ofSize: 16)  // Yazı tipi ve boyutu
+        ], for: .normal)
+        
+        control.setTitleTextAttributes([
+            .foregroundColor: UIColor.orange,  // Seçilen segmentin yazı rengi
+            .font: UIFont.boldSystemFont(ofSize: 16)
+        ], for: .selected)
         return control
     }()
     
@@ -139,6 +163,22 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
+        // StackView içinde textField ve segmentedControl'u yerleştir
+        let stackView = UIStackView(arrangedSubviews: [regionTextField, mapTypeSegmentedControl])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
+        view.addSubview(stackView)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -17),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        ])
+
+        
         NSLayoutConstraint.activate([
             noInternetLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
             noInternetLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -161,23 +201,9 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
             zoomOutButton.heightAnchor.constraint(equalToConstant: 40)
         ])
         
-        // StackView içinde textField ve segmentedControl'u yerleştir
-        let stackView = UIStackView(arrangedSubviews: [regionTextField, mapTypeSegmentedControl])
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        stackView.alignment = .center
-        stackView.distribution = .fillProportionally
-        
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-        ])
-        
+        // StackView, titleView değil, ekranda üst kısmı düzenli bir şekilde yerleştirilecek
     }
+
     
     
     private func bindViewModel() {

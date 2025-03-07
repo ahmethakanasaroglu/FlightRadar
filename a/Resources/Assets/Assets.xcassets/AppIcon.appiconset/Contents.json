@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "DALL·E 2025-03-07 14.56.33 - A sleek and modern app icon for an app named OpenRadar. The icon should feature a stylized radar screen with smooth, circular lines. The radar should  2.jpg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -12,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "DALL·E 2025-03-07 14.56.33 - A sleek and modern app icon for an app named OpenRadar. The icon should feature a stylized radar screen with smooth, circular lines. The radar should  1.jpg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -23,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "DALL·E 2025-03-07 14.56.33 - A sleek and modern app icon for an app named OpenRadar. The icon should feature a stylized radar screen with smooth, circular lines. The radar should .jpg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

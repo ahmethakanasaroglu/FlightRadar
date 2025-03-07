@@ -200,6 +200,7 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     
+    
     /// **Kullanıcının konumunu güncellemeye başlar**
     func startUpdatingLocation() {
         let status = CLLocationManager.authorizationStatus()
@@ -214,6 +215,7 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let userLocation = locations.last else { return }
         delegate?.didUpdateUserLocation(userLocation)
+        
     }
     
     /// **Harita tipini değiştirir**
