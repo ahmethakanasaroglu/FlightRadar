@@ -118,6 +118,10 @@ class BottomSheetViewController: UIViewController, PanModalPresentable {
                 flightImageView.image = UIImage(named: "arabia_logo") // Arabia logo
             case "TKJ":
                 flightImageView.image = UIImage(named: "ajet_logo") // Arabia logo
+            case "UAE":
+                flightImageView.image = UIImage(named: "uae_emirates")
+            case "FDB":
+                flightImageView.image = UIImage(named: "uae_emirates")
             default:
                 flightImageView.image = UIImage(named: "loading_logo") // Default loading image
             }
@@ -170,7 +174,7 @@ class BottomSheetViewController: UIViewController, PanModalPresentable {
             present(alert, animated: true, completion: nil)
         }
     }
-
+    
     
     // PanModal settings
     var panScrollable: UIScrollView? {

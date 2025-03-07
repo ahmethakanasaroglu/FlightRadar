@@ -1,11 +1,13 @@
 import UIKit
 import MapKit
 
-class HomeScreenViewController: UIViewController, MKMapViewDelegate {
+class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate {
     
     private let viewModel = HomeScreenViewModel()
     private let mapView = MKMapView()
     private let locationManager = CLLocationManager()
+    
+    
     private let noInternetLabel: UILabel = {
         let label = UILabel()
         label.text = "İnternet bağlantınız yok!"
@@ -54,10 +56,11 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate {
         return button
     }()
     
-    private let callSignTextField: UITextField = {
+    private let regionTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Call Sign:"
+        textField.placeholder = "Bölge Giriniz.."
         textField.borderStyle = .roundedRect
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     
@@ -75,8 +78,48 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate {
         bindViewModel()
         viewModel.fetchFlightData()
         viewModel.checkInternetConnection()  // Uygulama açıldığında interneti kontrol et
-        
+        regionTextField.delegate = self  // delegate'ini veriyoruz
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let locationName = textField.text, !locationName.isEmpty else {
+            return false
+        }
+        
+        // Yer ismini koordinatlara çevir
+        geocodeLocation(locationName)
+        
+        textField.resignFirstResponder() // Klavyeyi kapat
+        return true
+    }
+    
+    private func geocodeLocation(_ locationName: String) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(locationName) { [weak self] (placemarks, error) in
+            if let error = error {
+                print("Geocoding error: \(error)")
+                return
+            }
+            
+            guard let placemark = placemarks?.first, let location = placemark.location else {
+                print("No location found for the given name")
+                return
+            }
+            
+            // 4. Koordinatları aldıktan sonra haritayı o bölgeye zoom yapacak şekilde ayarla
+            self?.zoomToLocation(location.coordinate)
+        }
+    }
+    
+    private func zoomToLocation(_ coordinate: CLLocationCoordinate2D) {
+        let region = MKCoordinateRegion(
+            center: coordinate,
+            latitudinalMeters: 500000,
+            longitudinalMeters: 500000
+        )
+        mapView.setRegion(region, animated: true)
+    }
+    
     
     private func setupMapView() {
         view.addSubview(mapView)
@@ -119,7 +162,7 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate {
         ])
         
         // StackView içinde textField ve segmentedControl'u yerleştir
-        let stackView = UIStackView(arrangedSubviews: [callSignTextField, mapTypeSegmentedControl])
+        let stackView = UIStackView(arrangedSubviews: [regionTextField, mapTypeSegmentedControl])
         stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.alignment = .center
@@ -135,6 +178,7 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate {
         ])
         
     }
+    
     
     private func bindViewModel() {
         viewModel.userLocation = { [weak self] location in
@@ -233,6 +277,10 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate {
             .hybrid
         ][sender.selectedSegmentIndex]
         viewModel.updateMapType(to: selectedType)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
     
 }

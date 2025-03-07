@@ -12,8 +12,8 @@ class FlightDetailViewController: UIViewController {
     private let infoStackView = UIStackView()
     private let callSignLabel = UILabel()
     private let countryLabel = UILabel()
-    private let altitudeLabel = UILabel()
-    private let onGroundLabel = UILabel()
+    private let latitudeLabel = UILabel()
+    private let longitudeLabel = UILabel()
     private let velocityLabel = UILabel()
     private let trackLabel = UILabel()
     private let icao24Label = UILabel()
@@ -101,21 +101,21 @@ class FlightDetailViewController: UIViewController {
         // Label Ayarları
         setupLabel(callSignLabel, fontSize: 20, weight: .bold)
         setupLabel(countryLabel, fontSize: 16, weight: .medium)
-        setupLabel(altitudeLabel, fontSize: 16, weight: .medium)
+        setupLabel(latitudeLabel, fontSize: 16, weight: .medium)
         setupLabel(velocityLabel, fontSize: 16, weight: .medium)
         setupLabel(trackLabel, fontSize: 16, weight: .medium)
         setupLabel(icao24Label, fontSize: 16, weight: .medium)
-        setupLabel(onGroundLabel, fontSize: 16, weight: .medium)
+        setupLabel(longitudeLabel, fontSize: 16, weight: .medium)
 
         
         // Stack'e ekleme
         infoStackView.addArrangedSubview(callSignLabel)
         infoStackView.addArrangedSubview(countryLabel)
-        infoStackView.addArrangedSubview(altitudeLabel)
+        infoStackView.addArrangedSubview(latitudeLabel)
+        infoStackView.addArrangedSubview(longitudeLabel)
         infoStackView.addArrangedSubview(velocityLabel)
         infoStackView.addArrangedSubview(trackLabel)
         infoStackView.addArrangedSubview(icao24Label)
-        infoStackView.addArrangedSubview(onGroundLabel)
 
         
         // Haritada konumu göster
@@ -128,6 +128,7 @@ class FlightDetailViewController: UIViewController {
             
             let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 50000, longitudinalMeters: 50000)
             mapView.setRegion(region, animated: true)
+            
         }
     }
     
@@ -136,14 +137,15 @@ class FlightDetailViewController: UIViewController {
         label.textColor = .label
     }
     
+    
     private func configureUI() {
-        callSignLabel.text = "Çağrı Kodu: \(flight.callSign ?? "Bilinmiyor")"
-        countryLabel.text = "Menşei Ülke: \(flight.originCountry ?? "Bilinmiyor")"
-        altitudeLabel.text = "İrtifa: \(flight.baroAltitude != nil ? "\(Int(flight.baroAltitude!)) m" : "Bilinmiyor")"
-        velocityLabel.text = "Hız: \(flight.velocity != nil ? "\(Int(flight.velocity!)) km/h" : "Bilinmiyor")"
-        trackLabel.text = "Yön: \(flight.trueTrack != nil ? "\(Int(flight.trueTrack!))°" : "Bilinmiyor")"
-        icao24Label.text = "Uluslararası Sivil Havacılık Kodu: \(flight.icao24 ?? "Bilinmiyor")"
-        onGroundLabel.text = "Karada mı? \(flight.onGround ?? false)"
+        callSignLabel.text = "Çağrı Kodu: \(flight.callSign ?? "N/A")"
+        countryLabel.text = "Menşei Ülke: \(flight.originCountry ?? "N/A")"
+        latitudeLabel.text = "Enlem: \(flight.latitude != nil ? "\((flight.latitude!)) m" : "N/A")"
+        longitudeLabel.text = "Boylam: \(flight.longitude != nil ? "\((flight.longitude!)) m" : "N/A")"
+        velocityLabel.text = "Hız: \(flight.velocity != nil ? "\(Float(flight.velocity!)) km/h" : "N/A")"
+        trackLabel.text = "Yön: \(flight.trueTrack != nil ? "\(Int(flight.trueTrack!))°" : "N/A")"
+        icao24Label.text = "Uluslararası Sivil Havacılık Kodu: \(flight.icao24 ?? "N/A")"
 
         
         // LOGO AYARLAMASI
@@ -165,6 +167,8 @@ class FlightDetailViewController: UIViewController {
         case "BRU": return UIImage(named: "belavia_logo")
         case "ABY": return UIImage(named: "arabia_logo")
         case "TKJ": return UIImage(named: "ajet_logo")
+        case "UAE": return UIImage(named: "uae_emirates")
+        case "FDB": return UIImage(named: "uae_emirates")
         default: return UIImage(named: "loading_logo")
         }
     }

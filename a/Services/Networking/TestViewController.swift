@@ -13,8 +13,8 @@
 //            guard let flightModel = flightModel else { return }
 //            
 //            // Latitude ve Longitude değerlerini kontrol et
-//            for flight in flightModel.data! {
-//                if let lat = flight.live?.latitude, let lon = flight.live?.longitude {
+//            for flight in flightModel.states! {
+//                if let lat = flight.latitude, let lon = flight.longitude {
 //                    print("Canlı Uçuş Konumu: \(lat), \(lon)")
 //                }
 //            }

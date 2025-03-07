@@ -32,11 +32,11 @@ final class SplashScreenViewModel {
     func getInfoText(for animation: String) -> String {
         switch animation {
         case "Animation - 1739971059873":
-            return "Uçuş Bilgilerinize Anında Erişin!"
+            return "Uygulama İçin Konum İzniniz Gerekmektedir!"
         case "Animation - 1739971095243":
             return "Bu Uygulama Uçuş Radar Takibini Kolaylaştırır!"
         case "Animation - 1739967059887":
-            return "Uygulama İçin Konum İzniniz Gerekmektedir!"
+            return "Uçuş Bilgilerinize Anında Erişin!"
         default:
             return ""
         }

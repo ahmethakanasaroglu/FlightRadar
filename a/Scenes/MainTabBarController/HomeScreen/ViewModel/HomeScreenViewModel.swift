@@ -5,6 +5,7 @@ class HomeScreenViewModel: MapKitManagerDelegate {
     var mapType: ((MKMapType) -> Void)?
     var userLocation: ((CLLocation) -> Void)?
     var flightData: ((FlightModel?) -> Void)?
+    
     var onInternetStatusChanged: ((Bool, String) -> Void)?
     
     
@@ -15,6 +16,7 @@ class HomeScreenViewModel: MapKitManagerDelegate {
         observeInternetConnection()
         
     }
+    
     
     private func observeInternetConnection() {
         NetworkMonitor.shared.connectionStatusChanged = { [weak self] isConnected in
@@ -34,6 +36,7 @@ class HomeScreenViewModel: MapKitManagerDelegate {
             if let data = data {
                 print(data)
                 self?.flightData?(data)
+                print(data)
             } else {
                 print("API'den Veri Alınamadı!")
             }

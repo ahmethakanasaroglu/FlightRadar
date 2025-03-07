@@ -46,8 +46,11 @@ class FavoritesViewModel {
         }
         
         // Güncelleme bildirimini gönder
-        NotificationCenter.default.post(name: .favoritesUpdated, object: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .favoritesUpdated, object: nil)
+        }
     }
+    
     
     // Uçuş favorilerde mi?
     func isFlightInFavorites(_ flight: State) -> Bool {

@@ -5,8 +5,9 @@ class FavoriteFlightCell: UITableViewCell {
     private let cardView = UIView()
     private let flightLabel = UILabel()
     private let flightIcon = UIImageView()
-    private let originCountryLabel = UILabel()
-    private let velocityLabel = UILabel()
+    private let icao24Label = UILabel()
+    private let latitudeLabel = UILabel()
+    private let longitudeLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -49,20 +50,28 @@ class FavoriteFlightCell: UITableViewCell {
         cardView.addSubview(flightIcon)
         
         // Origin Country (Kalkış Ülkesi)
-        originCountryLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        originCountryLabel.textColor = .white
-        cardView.addSubview(originCountryLabel)
+        icao24Label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        icao24Label.textColor = .white
+        cardView.addSubview(icao24Label)
         
-        // Velocity (Hız Bilgisi)
-        velocityLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        velocityLabel.textColor = .white
-        cardView.addSubview(velocityLabel)
+        
+        // Latitude (Enlem Bilgisi)
+        latitudeLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        latitudeLabel.textColor = .white
+        cardView.addSubview(latitudeLabel)
+        
+        // Longitude (Boylam Bilgisi)
+        longitudeLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        longitudeLabel.textColor = .white
+        cardView.addSubview(longitudeLabel)
         
         // Auto Layout
         flightLabel.translatesAutoresizingMaskIntoConstraints = false
         flightIcon.translatesAutoresizingMaskIntoConstraints = false
-        originCountryLabel.translatesAutoresizingMaskIntoConstraints = false
-        velocityLabel.translatesAutoresizingMaskIntoConstraints = false
+        icao24Label.translatesAutoresizingMaskIntoConstraints = false
+        latitudeLabel.translatesAutoresizingMaskIntoConstraints = false
+        longitudeLabel.translatesAutoresizingMaskIntoConstraints = false
+
 
         NSLayoutConstraint.activate([
             flightLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 8),
@@ -71,21 +80,29 @@ class FavoriteFlightCell: UITableViewCell {
             flightIcon.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             flightIcon.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
             
-            originCountryLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            originCountryLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            icao24Label.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            icao24Label.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             
-            velocityLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            velocityLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16)
+            latitudeLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            latitudeLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            
+            longitudeLabel.topAnchor.constraint(equalTo: latitudeLabel.bottomAnchor ),
+            longitudeLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16)
         ])
     }
     
     func configure(with flight: State) {
-        flightLabel.text = flight.callSign ?? "Bilinmeyen Uçuş"
-        originCountryLabel.text = flight.originCountry ?? "Bilinmiyor"
-        if let velocity = flight.velocity {
-            velocityLabel.text = "\(velocity) km/h"
+        flightLabel.text = "Çağrı Kodu: \(flight.callSign ?? "Bilinmeyen Uçuş")"
+        icao24Label.text = "Adres: \(flight.icao24 ?? "Bilinmiyor")"
+        if let latitude = flight.latitude {
+            latitudeLabel.text = "Enlem: \(latitude) m"
         } else {
-            velocityLabel.text = "Hız Bilgisi Yok"
+            latitudeLabel.text = "Enlem Bilgisi Yok"
+        }
+        if let longitude = flight.longitude {
+            longitudeLabel.text = "Boylam: \(longitude) m"
+        } else {
+            longitudeLabel.text = "Boylam Bilgisi Yok"
         }
     }
 }
