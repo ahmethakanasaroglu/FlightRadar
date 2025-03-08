@@ -59,7 +59,7 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
         
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.image = UIImage(systemName: "airplane")?.withTintColor(.yellow, renderingMode: .alwaysOriginal) // Uçak simgesi
+            annotationView?.image = UIImage(named: "plane_icon")?.withTintColor(.yellow, renderingMode: .alwaysOriginal) // Uçak simgesi
             annotationView?.tintColor = .yellow
             annotationView?.frame.size = CGSize(width: 20, height: 20) // Simge boyutu
         } else {

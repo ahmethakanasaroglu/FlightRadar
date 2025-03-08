@@ -106,7 +106,7 @@ class FlightDetailViewController: UIViewController {
         setupLabel(trackLabel, fontSize: 16, weight: .medium)
         setupLabel(icao24Label, fontSize: 16, weight: .medium)
         setupLabel(longitudeLabel, fontSize: 16, weight: .medium)
-
+        
         
         // Stack'e ekleme
         infoStackView.addArrangedSubview(callSignLabel)
@@ -116,7 +116,7 @@ class FlightDetailViewController: UIViewController {
         infoStackView.addArrangedSubview(velocityLabel)
         infoStackView.addArrangedSubview(trackLabel)
         infoStackView.addArrangedSubview(icao24Label)
-
+        
         
         // Haritada konumu göster
         if let lat = flight.latitude, let lon = flight.longitude {
@@ -146,7 +146,7 @@ class FlightDetailViewController: UIViewController {
         velocityLabel.text = "Hız: \(flight.velocity != nil ? "\(Float(flight.velocity!)) km/h" : "N/A")"
         trackLabel.text = "Yön: \(flight.trueTrack != nil ? "\(Int(flight.trueTrack!))°" : "N/A")"
         icao24Label.text = "Uluslararası Sivil Havacılık Kodu: \(flight.icao24 ?? "N/A")"
-
+        
         
         // LOGO AYARLAMASI
         if let callSign = flight.callSign {
