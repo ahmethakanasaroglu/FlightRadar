@@ -227,7 +227,7 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
 extension MKAnnotationView {
     
     func updateRotation(with trueTrack: CLLocationDegrees) {
-        let rotationAngle = CGFloat(trueTrack * .pi / 180) // Dereceyi radyana çevir
+        let rotationAngle = CGFloat(trueTrack * .pi / 270) // Dereceyi radyana çevir  // başta 180'di. derece düzeltildi.
         self.transform = CGAffineTransform(rotationAngle: rotationAngle)
     }
 }
