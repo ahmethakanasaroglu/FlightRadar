@@ -1,9 +1,30 @@
-import Foundation
+import UIKit
 import CoreData
 
 class FavoritesViewModel {
     private let coreDataManager: CoreDataManager
     private(set) var favoriteFlights: [State] = []
+    
+    private let themeKey = "isDarkMode"
+    
+    // Kullanıcının kaydettiği tema durumunu döndürüyor
+    var isDarkMode: Bool {
+        return UserDefaults.standard.bool(forKey: themeKey)
+    }
+    
+    // Temayı değiştiriyor ve kaydediyor
+    func toggleTheme(isOn: Bool) {
+        UserDefaults.standard.set(isOn, forKey: themeKey)
+        applyTheme(isDark: isOn)
+    }
+    
+    // Uygulama genelinde temayı değiştir
+    private func applyTheme(isDark: Bool) {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            window.overrideUserInterfaceStyle = isDark ? .dark : .light
+        }
+    }
     
     init(coreDataManager: CoreDataManager = CoreDataManager.shared) {
         self.coreDataManager = coreDataManager
