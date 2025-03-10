@@ -121,17 +121,35 @@ class SplashScreenViewController: UIViewController, UIPageViewControllerDataSour
     
     @objc private func didTapContinue() {
         let currentIndex = pageControl.currentPage
+        
+        // Eğer şu anda son sayfada değilsek
         if currentIndex < lottieViews.count - 1 {
-            // Son animasyon değilse, bir sonraki animasyona geç
-            let nextVC = getLottieVC(for: currentIndex + 1)
-            pageViewController.setViewControllers([nextVC!], direction: .forward, animated: true, completion: nil)
-            pageControl.currentPage = currentIndex + 1
+            let nextIndex = currentIndex + 1
+            let nextVC = getLottieVC(for: nextIndex)
+            
+            // Sayfayı ileriye doğru kaydır
+            pageViewController.setViewControllers([nextVC!], direction: .forward, animated: true) { _ in
+                // Sayfa geçişi tamamlandığında index'i güncelle
+                self.pageControl.currentPage = nextIndex
+                // Buton başlığını güncelle
+                if nextIndex == self.lottieViews.count - 1 {
+                    DispatchQueue.main.async {
+                        self.continueButton.setTitle("Bitir", for: .normal)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.continueButton.setTitle("Devam Et", for: .normal)
+                    }
+                }
+            }
         } else {
-            // Son animasyonsa, ana ekrana git
+            // Son sayfadaysak, uygulamayı başlat
+            continueButton.setTitle("Bitir", for: .normal)
             navigateToHomeScreen()
             viewModel.saveSplashSeen()
         }
     }
+    
     
     private func navigateToHomeScreen() {
         let homeVC = MainTabBarController()
@@ -185,7 +203,23 @@ class SplashScreenViewController: UIViewController, UIPageViewControllerDataSour
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let currentVC = pageViewController.viewControllers?.first,
               let index = lottieViews.firstIndex(where: { currentVC.view.subviews.contains($0) }) else { return }
+        
+        print("Current index: \(index)")  // Burada index'i kontrol et
         pageControl.currentPage = index
+        
+        // Son sayfada mı olduğumuzu kontrol et
+        if index == lottieViews.count - 1 {
+            DispatchQueue.main.async {
+                self.continueButton.setTitle("Bitir", for: .normal)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.continueButton.setTitle("Devam Et", for: .normal)
+            }
+        }
     }
+    
+    
+    
     
 }
