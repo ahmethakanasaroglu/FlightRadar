@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func applySavedTheme() {
-            let isDark = UserDefaults.standard.bool(forKey: "isDarkMode")
+            let isDark = UserDefaults.standard.bool(forKey: "selectedTheme")
             window?.overrideUserInterfaceStyle = isDark ? .dark : .light
         }
 }

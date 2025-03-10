@@ -104,6 +104,7 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
         viewModel.checkInternetConnection()  // Uygulama açıldığında interneti kontrol et
         regionTextField.delegate = self  // delegate'ini veriyoruz
     }
+
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let locationName = textField.text, !locationName.isEmpty else {
@@ -132,6 +133,7 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
             
             // 4. Koordinatları aldıktan sonra haritayı o bölgeye zoom yapacak şekilde ayarla
             self?.zoomToLocation(location.coordinate)
+
         }
     }
     

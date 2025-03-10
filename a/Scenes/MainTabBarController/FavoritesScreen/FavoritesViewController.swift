@@ -5,21 +5,13 @@ class FavoritesViewController: UIViewController {
     private let tableView = UITableView()
     private let viewModel = FavoritesViewModel()
     
-    private let themeSwitch: UISwitch = {
-        let themeSwitch = UISwitch()
-        return themeSwitch
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        updateThemeSwitch()
     }
     
     private func setupUI() {
-        themeSwitch.addTarget(self, action: #selector(didToggleThemeSwitch), for: .valueChanged)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: themeSwitch)
-        
         title = "Favori Uçuşlar"
         view.backgroundColor = .systemBackground
         
@@ -41,15 +33,6 @@ class FavoritesViewController: UIViewController {
         ])
     }
     
-    private func updateThemeSwitch() {
-        // Switch'in mevcut temaya göre ayarlanmasını sağlıyoruz
-        themeSwitch.isOn = viewModel.isDarkMode
-    }
-    
-    @objc private func didToggleThemeSwitch() {
-        let isDarkMode = themeSwitch.isOn
-        viewModel.toggleTheme(isOn: isDarkMode)
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
