@@ -21,23 +21,27 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
         locationManager?.delegate = self
     }
     
-    // Annotations eklemek için fonksiyon
     // Annotations eklemek için fonksiyon (Sadece ekran içindekileri ekler)
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        let visibleRegion = mapView.region
+        let minLat = visibleRegion.center.latitude - (visibleRegion.span.latitudeDelta / 2)
+        let maxLat = visibleRegion.center.latitude + (visibleRegion.span.latitudeDelta / 2)
+        let minLon = visibleRegion.center.longitude - (visibleRegion.span.longitudeDelta / 2)
+        let maxLon = visibleRegion.center.longitude + (visibleRegion.span.longitudeDelta / 2)
+
+        let visibleFlights = flightsModel.filter { flight in
+            guard let lat = flight.latitude, let lon = flight.longitude else { return false }
+            return lat >= minLat && lat <= maxLat && lon >= minLon && lon <= maxLon
+        }
+
+        addAnnotations(to: mapView, with: visibleFlights)
+    }
+
+    // Annotations eklemek için fonksiyon
     func addAnnotations(to mapView: MKMapView, with flights: [State]) {
         mapView.removeAnnotations(mapView.annotations) // Eski annotation'ları temizle
-        
-        let visibleRegion = mapView.region
-        let minLat = visibleRegion.center.latitude - visibleRegion.span.latitudeDelta / 2
-        let maxLat = visibleRegion.center.latitude + visibleRegion.span.latitudeDelta / 2
-        let minLon = visibleRegion.center.longitude - visibleRegion.span.longitudeDelta / 2
-        let maxLon = visibleRegion.center.longitude + visibleRegion.span.longitudeDelta / 2
-        
-        let visibleFlights = flights.filter { flight in
-            guard let latitude = flight.latitude, let longitude = flight.longitude else { return false }
-            return latitude >= minLat && latitude <= maxLat && longitude >= minLon && longitude <= maxLon
-        }
-        
-        for flight in visibleFlights {
+     
+        for flight in flights {
             if let latitude = flight.latitude, let longitude = flight.longitude {
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
@@ -75,10 +79,6 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
         return annotationView
     }
     
-    
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        addAnnotations(to: mapView, with: flightsModel) // Zoom değiştiğinde güncelle
-    }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let annotation = view.annotation else { return }

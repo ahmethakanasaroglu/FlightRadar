@@ -7,6 +7,8 @@ class MainTabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
+        tabBar.backgroundColor = .white
+        tabBar.isTranslucent = false
         let homeVC = HomeScreenViewController()
         let favoritesVC = FavoritesViewController()
         let settingsVC = SettingsViewController()

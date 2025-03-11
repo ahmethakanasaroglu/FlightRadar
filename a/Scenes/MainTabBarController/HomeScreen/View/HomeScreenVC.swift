@@ -103,8 +103,9 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
         viewModel.fetchFlightData()
         viewModel.checkInternetConnection()  // Uygulama açıldığında interneti kontrol et
         regionTextField.delegate = self  // delegate'ini veriyoruz
+        
     }
-
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let locationName = textField.text, !locationName.isEmpty else {
@@ -133,7 +134,7 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
             
             // 4. Koordinatları aldıktan sonra haritayı o bölgeye zoom yapacak şekilde ayarla
             self?.zoomToLocation(location.coordinate)
-
+            
         }
     }
     
@@ -179,7 +180,7 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])
-
+        
         
         NSLayoutConstraint.activate([
             noInternetLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
@@ -205,7 +206,7 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
         
         // StackView, titleView değil, ekranda üst kısmı düzenli bir şekilde yerleştirilecek
     }
-
+    
     
     
     private func bindViewModel() {
