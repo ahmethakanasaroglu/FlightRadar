@@ -135,9 +135,7 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
     
     /// **Konum İzni İsteme**
     func requestLocationPermission() {
-        guard let locationManager = locationManager else {
-            return
-        }
+        guard let locationManager = locationManager else {return}
         
         let status = CLLocationManager.authorizationStatus()
         
@@ -203,6 +201,11 @@ class MapKitManager: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
     
     /// **Kullanıcının konumunu güncellemeye başlar**
     func startUpdatingLocation() {
+        guard CLLocationManager.locationServicesEnabled() else {
+            print("Konum servisleri kapalı!")
+            return
+        }
+        
         let status = CLLocationManager.authorizationStatus()
         if status == .authorizedWhenInUse || status == .authorizedAlways {
             locationManager?.startUpdatingLocation()
@@ -231,4 +234,7 @@ extension MKAnnotationView {
         self.transform = CGAffineTransform(rotationAngle: rotationAngle)
     }
 }
+
+
+
 

@@ -1,10 +1,11 @@
 import UIKit
 import MapKit
 
-class FlightDetailViewController: UIViewController {
+class FlightDetailViewController: UIViewController, MKMapViewDelegate {
     
     private let flight: State
-    
+    var flightsModel: [State] = []
+
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
@@ -32,6 +33,7 @@ class FlightDetailViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         configureUI()
+        mapView.delegate=self
     }
     
     private func setupUI() {
@@ -130,8 +132,38 @@ class FlightDetailViewController: UIViewController {
             mapView.setRegion(region, animated: true)
             
         }
+        
     }
-    
+    //////////////
+    // MKMapViewDelegate Method: Annotation için özel görseli ayarlıyoruz
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let identifier = "FlightAnnotation"
+        
+        if annotation is MKUserLocation {
+            return nil // Kullanıcının konumu için özel bir görünüm atama
+        }
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.image = UIImage(named: "plane_icon")?.withTintColor(.yellow, renderingMode: .alwaysOriginal) // Uçak simgesi
+            annotationView?.tintColor = .yellow
+            annotationView?.frame.size = CGSize(width: 20, height: 20) // Simge boyutu
+        } else {
+            annotationView?.annotation = annotation
+        }
+      
+        
+        // Uçağın yönünü ayarla
+        if let flight = flightsModel.first(where: { $0.latitude == annotation.coordinate.latitude && $0.longitude == annotation.coordinate.longitude }),
+           let trueTrack = flight.trueTrack {
+            annotationView?.updateRotation(with: CLLocationDegrees(trueTrack))
+        }
+        
+        return annotationView
+    }
+    ///////////
     private func setupLabel(_ label: UILabel, fontSize: CGFloat, weight: UIFont.Weight) {
         label.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
         label.textColor = .label
@@ -173,3 +205,4 @@ class FlightDetailViewController: UIViewController {
         }
     }
 }
+

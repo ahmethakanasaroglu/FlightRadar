@@ -275,7 +275,10 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
     }
     
     @objc private func didTapLocateMe() {
-        guard let userLocation = locationManager.location?.coordinate else { return }
+        regionTextField.text = ""
+        guard let userLocation = MapKitManager.shared.locationManager?.location?.coordinate else { return }
+        print(userLocation)
+        
         
         let region = MKCoordinateRegion(
             center: userLocation,
@@ -283,7 +286,11 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
             longitudinalMeters: 50000
         )
         mapView.setRegion(region, animated: true)
+        // mapView.userTrackingMode = .follow   --> bunu ekledigimizde de mavi noktayla gösteriyor ama baska yere gidilmiyor haritada merkezi lokasyon yapıyor.
+        mapView.showsUserLocation = .BooleanLiteralType(true) // Kullanıcının mavi noktayla gösterilmesini sağlar.
+        
     }
+    
     
     @objc private func didTapZoomIn() {
         var region = mapView.region
