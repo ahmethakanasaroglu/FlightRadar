@@ -83,7 +83,7 @@ class SplashScreenViewController: UIViewController, UIPageViewControllerDataSour
         if let firstVC = getLottieVC(for: 0) {
             pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         }
-        
+        // view'a subview olarak eklediğimiz zamanlarda pageViewController için alttaki 3 kod hep lazım
         addChild(pageViewController)
         view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)

@@ -71,7 +71,7 @@ class BottomSheetViewController: UIViewController, PanModalPresentable {
             flightImageView.topAnchor.constraint(equalTo: flightInfoContainer.topAnchor),
             flightImageView.leadingAnchor.constraint(equalTo: flightInfoContainer.leadingAnchor),
             flightImageView.trailingAnchor.constraint(equalTo: flightInfoContainer.trailingAnchor),
-            flightImageView.heightAnchor.constraint(equalToConstant: 120),
+            flightImageView.heightAnchor.constraint(equalToConstant: 180),
             
             flightInfoLabel.topAnchor.constraint(equalTo: flightImageView.bottomAnchor, constant: 10),
             flightInfoLabel.leadingAnchor.constraint(equalTo: flightInfoContainer.leadingAnchor, constant: 20),

@@ -42,9 +42,9 @@ class HomeScreenViewModel: MapKitManagerDelegate {
         }
     }
     
-    // 5sn de bir servisi tetikliyor, sunum esnasında acılacak, daily-400 api request limit
+     // 5sn de bir servisi tetikliyor, sunum esnasında acılacak, daily-400 api request limit
 //    func startUpdatingFlightData() {
-//        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(fetchFlightData), userInfo: nil, repeats: true)
+//        timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(fetchFlightData), userInfo: nil, repeats: true)
 //    }
 
     

@@ -58,9 +58,16 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
     
     private let regionTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Ülke, Şehir Ara.."
         textField.borderStyle = .roundedRect
         textField.clearButtonMode = .whileEditing
+        textField.backgroundColor = .white
+        textField.textColor = .black
+        
+        // Placeholder rengini manuel olarak belirleme
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "Ülke, Şehir Ara",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+        )
         
         // Çerçeve ekleme
         textField.layer.borderColor = UIColor.orange.cgColor  // Kenarlık rengi
@@ -69,10 +76,11 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
         textField.layer.masksToBounds = true  // Kenarlara yuvarlama uygulanabilmesi için
         
         return textField
+        
     }()
     
     private let mapTypeSegmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Standart", "Uydu", "Hibrit"])
+        let control = UISegmentedControl(items: ["Klasik", "Uydu", "Hibrit"])
         control.selectedSegmentIndex = 0
         control.addTarget(self, action: #selector(didChangeMapType), for: .valueChanged)
         
@@ -282,13 +290,13 @@ class HomeScreenViewController: UIViewController, MKMapViewDelegate, UITextField
         
         let region = MKCoordinateRegion(
             center: userLocation,
-            latitudinalMeters: 50000,
-            longitudinalMeters: 50000
+            latitudinalMeters: 100000,
+            longitudinalMeters: 100000
         )
         mapView.setRegion(region, animated: true)
         // mapView.userTrackingMode = .follow   --> bunu ekledigimizde de mavi noktayla gösteriyor ama baska yere gidilmiyor haritada merkezi lokasyon yapıyor.
         mapView.showsUserLocation = .BooleanLiteralType(true) // Kullanıcının mavi noktayla gösterilmesini sağlar.
-        
+        mapView.userTrackingMode = .none  // sürekli kullanıcının konumunu merkez almasın ekranda diye
     }
     
     
